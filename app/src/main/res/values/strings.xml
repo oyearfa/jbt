@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">task</string>
+    <!--    <string name="janBarkTask">JanBarkTask</string>-->
+    <string name="janBarkTask">Task</string>
+    <string name="ss">ScreenShot</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_image_data_found">No images data found</string>
+</resources>
