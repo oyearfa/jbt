@@ -3,6 +3,7 @@ package com.example.task.extension
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Build
@@ -10,14 +11,23 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import com.example.task.BaseConfig
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 
+const val PREFS_KEY = "Prefs"
+
+fun Context.getSharedPrefs(): SharedPreferences =
+    getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE)
+
+val Context.baseConfig: BaseConfig get() = BaseConfig.newInstance(this)
+
+
+
 
 fun Context.takeScreenshot(context: Context): String? {
-
 
     val rootView = (context as? Activity)?.window?.decorView?.rootView
 
@@ -31,17 +41,16 @@ fun Context.takeScreenshot(context: Context): String? {
             Bitmap.Config.ARGB_8888
         )
     }
-    Log.d("TAG", "takeScreenshot: $bitmap")
     val canvas = bitmap?.let { Canvas(it) }
     rootView?.draw(canvas)
 
     val fileName = "JanBark${System.currentTimeMillis()}.png"
     Log.d("TAG", "takeScreenshot2: $fileName")
 
-//    val filePath = "${context.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.absolutePath}/$fileName/"
+    val filePath = "${context.getExternalFilesDir(Environment.DIRECTORY_DCIM)?.absolutePath}/$fileName/"
 
 
-    val filePath = "${Environment.getExternalStoragePublicDirectory("Phone/DCIM/JanBark")?.absolutePath}/$fileName"
+//    val filePath = "${Environment.getExternalStoragePublicDirectory("Phone/DCIM/JanBark")?.absolutePath}/$fileName"
 
 
     //test
@@ -63,7 +72,7 @@ fun Context.takeScreenshot(context: Context): String? {
 
  fun Context.saveScreenshotToGallery(context: Context, bitmap: Bitmap) {
     // Get the directory to save screenshots
-    val folder = File(Environment.getExternalStorageDirectory().toString() + "/Janbark")
+    val folder = File(Environment.getExternalStorageDirectory().toString() + "/Screenshots")
     if (!folder.exists()) {
         folder.mkdirs()
     }
